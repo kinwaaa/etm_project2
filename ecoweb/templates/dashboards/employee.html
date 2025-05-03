@@ -1,0 +1,295 @@
+{% extends "master.html" %}
+{% load static %}
+
+{% block title %}Employee Dashboard{% endblock %}
+
+{% block content %}
+<style>
+    /* Scrollable Table with Sticky Header */
+ .table-wrapper {
+     max-height: 400px;
+     overflow-x: auto; /* Enable horizontal scrolling */
+     overflow-y: auto;
+     border: 1px solid #444;
+     margin-top: 20px;
+     position: relative;
+     width: 100%; /* Ensure it's 100% wide to allow it to be responsive */
+     margin-left: auto; /* Center the table horizontally */
+     margin-right: auto; /* Center the table horizontally */
+ }
+ 
+ /* Apply styles to the table */
+ .table-wrapper table {
+     width: 100%;
+     border-collapse: collapse;
+     table-layout: auto; /* Adjusts column widths based on content */
+ }
+ 
+ /* Sticky Header */
+ .table-wrapper thead {
+     position: sticky;
+     top: 0;
+     background-color: #333;
+     z-index: 1;
+ }
+ 
+ /* Header Styling */
+ th, td {
+     padding: 12px 15px;
+     text-align: left;
+     font-size: 14px;
+     transition: background-color 0.3s ease, color 0.3s ease;
+     word-wrap: break-word; /* Allows content to wrap within cells */
+     white-space: normal; /* Prevents text from overflowing and squeezing */
+ }
+ 
+ /* Header */
+ th {
+     background-color: #333;
+     color: #fff;
+     text-transform: uppercase;
+     letter-spacing: 1px;
+     font-weight: 500;
+ }
+ 
+ /* Table Data */
+ td {
+     background-color: #222;
+     color: #eee;
+     word-wrap: break-word;
+     white-space: normal;
+     overflow: hidden;
+     text-overflow: ellipsis;
+ }
+ 
+ /* Row Styling */
+ tbody tr {
+     border-bottom: 1px solid #444;
+     transition: background-color 0.3s ease;
+ }
+ 
+ tbody tr:hover {
+     background-color: #444;
+ }
+ 
+ /* Button Styling */
+ button {
+     padding: 8px 16px;
+     font-size: 14px;
+     cursor: pointer;
+     border-radius: 25px;
+     background-color: #444;
+     color: white;
+     border: none;
+     transition: background-color 0.3s ease, transform 0.2s ease;
+ }
+ 
+ button:hover {
+     background-color: #555;
+     transform: scale(1.05);
+ }
+ 
+ /* Logout Button */
+ .logout-button {
+     position: absolute;
+     top: 10px;
+     right: 10px;
+     background-color: #333;
+     color: #fff;
+     padding: 10px 20px;
+     border: none;
+     cursor: pointer;
+     border-radius: 5px;
+     font-size: 16px;
+     transition: background-color 0.3s ease;
+ }
+ 
+ .logout-button:hover {
+     background-color: #444;
+ }
+ 
+ /* Modal Styles */
+ .modal {
+     display: none;
+     position: fixed;
+     z-index: 1000;
+     left: 0;
+     top: 0;
+     width: 100%;
+     height: 100%;
+     overflow: auto;
+     background-color: rgba(0, 0, 0, 0.5);
+ }
+ 
+ .modal-content {
+     background-color: #222;
+     margin: 10% auto;
+     padding: 20px;
+     width: 70%;
+     color: #fff;
+     border-radius: 8px;
+     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+ }
+ 
+ .close {
+     color: #aaa;
+     font-size: 28px;
+     font-weight: bold;
+     transition: color 0.2s ease;
+ }
+ 
+ .close:hover,
+ .close:focus {
+     color: #fff;
+     cursor: pointer;
+ }
+ 
+ /* Responsive adjustments for small screens */
+ @media (max-width: 768px) {
+     /* Ensure table wrapper takes up most of the screen width on smaller screens */
+     .table-wrapper {
+         width: 95%; /* Adjust the width of the table wrapper */
+     }
+ 
+     /* Adjust font size and padding for smaller screens */
+     table, th, td {
+         font-size: 12px;
+         padding: 8px 10px;
+     }
+ 
+     /* Buttons */
+     .logout-button {
+         font-size: 14px;
+         padding: 8px 16px;
+     }
+ 
+     /* Adjust modal width for small screens */
+     .modal-content {
+         width: 90%;
+     }
+ 
+     /* Table Styling for smaller screens */
+     th, td {
+         word-wrap: break-word; /* Ensure words can wrap properly */
+         white-space: normal;  /* Prevent text from squeezing */
+     }
+ }
+ 
+ </style>
+<div class="container">
+    <h2>Employee Dashboard</h2>
+    <div class="dashboard-card">
+        <h3>Welcome, {{ user.username }}!</h3>
+        <p>Your tasks and projects will be displayed here.</p>
+    </div>
+
+    <!-- Account Details Button -->
+    <button onclick="openModal('account-details-modal')">
+        Account Details
+    </button>
+
+    <!-- Logout Button -->
+    <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="logout-button">Logout</button>
+    </form>
+
+    <!-- Account Details Modal -->
+    <div id="account-details-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('account-details-modal')">&times;</span>
+            <h3>Account Details</h3>
+            <div class="account-details">
+                <p><strong>First Name:</strong> {{ user.first_name }}</p>
+                <p><strong>Last Name:</strong> {{ user.last_name }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <p><strong>Phone:</strong> {{ user.phone|default:"N/A" }}</p>
+                <p><strong>Role:</strong> {{ user.role.role_name }}</p>
+                <p><strong>Department:</strong> {{ user.department.department_name }}</p>
+                <button onclick="openModal('edit-user-modal-{{ user.id }}')">Edit</button>
+            </div>
+        </div>
+    </div>
+    <!-- Edit Modal -->
+    <div id="edit-user-modal-{{ user.id }}" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('edit-user-modal-{{ user.id }}')">&times;</span>
+            <h3>Edit User</h3>
+            <form action="{% url 'update-user' user.id %}" method="post">
+                {% csrf_token %}
+
+                <label for="first_name">First Name:</label>
+                <input type="text" name="first_name" value="{{ user.first_name }}" required>
+
+                <label for="last_name">Last Name:</label>
+                <input type="text" name="last_name" value="{{ user.last_name }}" required>
+
+                <label for="email">Email:</label>
+                <input type="email" name="email" value="{{ user.email }}" required>
+
+                <label for="email">Password:</label>
+                <input type="password" name="password" value="{{ user.password }}" required>
+                
+                <label for="phone">Phone:</label>
+                <input type="text" name="phone" value="{{ user.phone }}" required>
+
+
+                <button type="submit">Update User</button>
+            </form>
+        </div>
+    </div>
+
+    <hr>
+    
+    <h3>My Tasks</h3>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Due Date</th>
+                    <th>Project</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+                    {% if task.assigned_to.id == user.id %}
+                    <tr>
+                        <td>{{ task.title }}</td>
+                        <td>{{ task.description }}</td>
+                        <td>{{ task.status }}</td>
+                        <td>{{ task.due_date }}</td>
+                        <td>{{ task.project.project_name }}</td>
+                    </tr>
+                    {% endif %}
+                {% empty %}
+                    <tr>
+                        <td colspan="5">No tasks assigned to you.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function openModal(id) {
+        document.getElementById(id).style.display = "block";
+    }
+
+    function closeModal(id) {
+        document.getElementById(id).style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        let modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        });
+    };
+</script>
+{% endblock %}

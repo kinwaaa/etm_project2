@@ -1,0 +1,252 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>ECOWEB - Sustainable Solutions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #121212;
+            color: #fff;
+        }
+
+        .navbar {
+            width: 100%;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color:  #1a1a1a;
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: 10;
+        }
+
+        .nav-links a {
+            color: #00bfff;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #007bb5;
+        }
+
+        .hero {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .bg-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            padding: 20px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+        }
+
+        .features {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .feature-item {
+            background-color: #1a1a1a;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            width: 300px;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-item:hover {
+            transform: scale(1.2);
+        }
+
+        .feature-item h3 {
+            margin-bottom: 15px;
+            color: #00bfff;
+        }
+
+        .feature-item p {
+            font-size: 1rem;
+            color: #aaa;
+        }
+
+        .contact {
+            background-color: #1a1a1a;
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .contact h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .contact p {
+            font-size: 1.1rem;
+            color: #aaa;
+            margin-bottom: 30px;
+        }
+
+        .contact-info {
+            font-size: 1.2rem;
+            color: #00bfff;
+        }
+
+        .contact-info a {
+            color: #00bfff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            background-color: #1a1a1a;
+            text-align: center;
+            padding: 20px;
+            color: #888;
+        }
+
+        footer a {
+            color: #00bfff;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .features {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    
+    <nav class="navbar">
+        <div>
+            <a href="/">
+                <img src="{% static 'logo.png' %}" alt="ECOWEB Logo" style="height: 65px;">
+            </a>
+        </div>
+        <div class="nav-links">
+            <a href="/login/">Login</a>
+            <a href="/register/">Sign Up</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <video autoplay muted loop playsinline class="bg-video">
+            <source src="static/vid3.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="video-overlay"></div>
+        <div class="hero-content">
+            <h1>Welcome to ECOWEB</h1>
+            <p>Sustainable solutions for a better tomorrow</p>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="feature-item">
+            <h3>Future-Oriented Meetings</h3>
+            <p>At ECOWEB, we focus on organizing meetings that shape the future. These gatherings bring together thought leaders to implement sustainable practices.</p>
+        </div>
+        <div class="feature-item">
+            <h3>Collaborative Solutions</h3>
+            <p>We facilitate collaboration between individuals and organizations that share a vision for a sustainable future through innovation.</p>
+        </div>
+        <div class="feature-item">
+            <h3>Commitment to the Future</h3>
+            <p>We create dynamic spaces for forward-thinking conversations aimed at building a greener, more sustainable world.</p>
+        </div>
+    </section>
+
+    <section class="contact">
+        <h2>Contact Us</h2>
+        <p>If you have any questions, feel free to reach out to us via phone/email or our Facebook page.</p>
+        <div class="contact-info">
+            <p>Phone: <a href="tel:+1234567890">+1 234 567 890</a></p>
+            <p>Email: <a href="#">ecoweb.enquiries@gmail.com</a></p>
+            <p>Facebook: <a href="https://www.facebook.com/profile.php?id=100070141153763">EcoWEB, Inc</a></p>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 ECOWEB</p>
+    </footer>
+
+</body>
+</html>

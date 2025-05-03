@@ -1,0 +1,20 @@
+{% extends "master.html" %}
+{% load static %}
+
+{% block title %}Client Dashboard{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h2>Client Dashboard</h2>
+        <div class="dashboard-card">
+            <h3>Welcome, Client!</h3>
+            <p>View your projects and invoices here.</p>
+            <button>View Projects</button>
+            <button>View Invoices</button>
+        </div>
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+{% endblock %}

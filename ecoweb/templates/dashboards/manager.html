@@ -1,0 +1,20 @@
+{% extends "master.html" %}
+{% load static %}
+
+{% block title %}Manager Dashboard{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h2>Manager Dashboard</h2>
+        <div class="dashboard-card">
+            <h3>Welcome, Manager!</h3>
+            <p>Manage your team and projects here.</p>
+            <button>View Projects</button>
+            <button>View Teams</button>
+        </div>
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+{% endblock %}

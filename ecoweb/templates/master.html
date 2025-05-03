@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}My Django Project{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+            <h1>ECOWEB INC.</h1>
+        </header>
+        
+
+        <main class="container">
+            {% block content %}
+            {% endblock %}
+        </main>
+
+        <footer>
+            <p>&copy; 2025 ECOWEB</p>
+        </footer>
+    </div>
+</body>
+</html>
